@@ -1,0 +1,33 @@
+﻿@model IEnumerable<StoreFront2.DATA.EF.Material>
+
+@{
+    ViewBag.Title = "Material";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("Add Material", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.MaterialName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.MaterialName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit Material", "Edit", new { id=item.MaterialID }) |
+            @Html.ActionLink("Material Info", "Details", new { id=item.MaterialID }) |
+            @Html.ActionLink("Delete Material", "Delete", new { id=item.MaterialID })
+        </td>
+    </tr>
+}
+
+</table>

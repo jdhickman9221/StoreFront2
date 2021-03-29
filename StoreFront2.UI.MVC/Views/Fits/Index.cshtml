@@ -1,0 +1,33 @@
+﻿@model IEnumerable<StoreFront2.DATA.EF.Fit>
+
+@{
+    ViewBag.Title = "Sizes";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("Add Size", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FitName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.FitName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit Size", "Edit", new { id=item.FitID }) |
+            @Html.ActionLink("Size Info", "Details", new { id=item.FitID }) |
+            @Html.ActionLink("Delete Size", "Delete", new { id=item.FitID })
+        </td>
+    </tr>
+}
+
+</table>

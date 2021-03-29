@@ -6,44 +6,212 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Rokkitt:100,300,400,700" rel="stylesheet">
+
+
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="~/Content/css/animate.css">
+    <!-- Icomoon Icon Fonts-->
+    <link rel="stylesheet" href="~/Content/css/icomoon.css">
+    <!-- Ion Icon Fonts-->
+    <link rel="stylesheet" href="~/Content/css/ionicons.min.css">
+    <!-- Bootstrap  -->
+    <link rel="stylesheet" href="~/Content/css/bootstrap.min.css">
+    <!-- Magnific Popup -->
+    <link rel="stylesheet" href="~/Content/css/magnific-popup.css">
+    <!-- Flexslider  -->
+    <link rel="stylesheet" href="~/Content/css/flexslider.css">
+    <!-- Owl Carousel -->
+    <link rel="stylesheet" href="~/Content/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/Content/css/owl.theme.default.min.css">
+    <!--jQuery UI below:-->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+
+    <!-- Date Picker -->
+    <link rel="stylesheet" href="~/Content/css/bootstrap-datepicker.css">
+    <!-- Flaticons  -->
+    <link rel="stylesheet" href="~/Content/fonts/flaticon/font/flaticon.css">
+    <!--Carousel Below added 3-27-2021-->
+    <link href="~/Content/css/css/jquery-gallery.css" rel="stylesheet" />
+
+
+    @RenderSection("datatablesCSS", required: false)
+
+    <!-- Theme style  -->
+    <link rel="stylesheet" href="~/Content/css/style.css">
 
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="colorlib-loader"></div>
+    <div id="page">
+        <div class="sale">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-8 offset-sm-2 text-center">
+                        <div class="row">
+                            <div class="owl-carousel2">
+                                <div class="item">
+                                    <div class="col">
+                                        <h3>
+                                            <a href="@Url.Action("Index", "Home")">The Luminary Body Jewelery</a>
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="col">
+                                        <h3><a href="@Url.Action("Store","Home")">Exotic pieces. Quality Materials. Just For You.</a></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="colorlib-nav" role="navigation">
+            <div class="top-menu">
+                <div class="container">
+                    <div class="row header" id="landing-header" style="">
+                        <div class="col-sm-7 col-md-9">
+                            <div id="colorlib-logo">
+                                <a href="@Url.Action("Index","Home")">
+                                    <img src="~/Content/images/TheLuminaryLogo.png" />
+                                </a>
+                                <form action="#" class="search-wrap">
+                                    <div class="form-group">
+                                        <input type="search" class="form-control search" placeholder="Search">
+                                        <button class="btn btn-primary submit-search text-center" type="submit"><i class="icon-search"></i></button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 text-left menu-1" id="mainNav">
+                            <ul>
+
+                                <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                                <li class="has-dropdown">
+                                    <a href="@Url.Action("Index","Jeweleries")">Jewelery</a>
+                                    <ul class="dropdown">
+                                        <li><a href="@Url.Action("Index","Types")">Styles</a></li>
+                                        <li><a href="@Url.Action("Index","Fits")">Sizes</a></li>
+                                        <li><a href="@Url.Action("Index", "Materials")">Materials</a></li>
+                                        <li><a href="@Url.Action("Index", "Suppliers")">Suppliers</a></li>
+                                    </ul>
+                                </li>
+                                <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+
+                                <li> @Html.Partial("_LoginPartial")</li>
+
+                                @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                                {
+                                    <li class="">@Html.ActionLink("Roles Admin", "Index", "RolesAdmin")</li>
+                                    <li class="">@Html.ActionLink("Users Admin", "Index", "UsersAdmin")</li>
+                                }
+                                @{
+                                    //make total items variable
+                                    int totalItems = 0;
+                                    if (Session["cart"] != null && ((Dictionary<int, StoreFront2.UI.MVC.Models.CartItemViewModel>)Session["cart"]).Count > 0)
+                                    {
+                                        //we have to unbox session. Then know the total items in cart.
+                                        Dictionary<int, StoreFront2.UI.MVC.Models.CartItemViewModel> cart = (Dictionary<int, StoreFront2.UI.MVC.Models.CartItemViewModel>)Session["cart"];//casting session at "cart" to dictionary.
+                                                                                                                                                                                          //now foreach
+                                        foreach (var item in cart)
+                                        {
+                                            totalItems += item.Value.Qty;
+                                            //reassignment of totalItems.
+                                        }
+                                    }
+                                }
+                                <li class="cart">
+                                    <a href="@Url.Action("Index", "ShoppingCart")">
+                                        <i class="icon-shopping-cart">
+                                        </i> Cart [@totalItems]
+                                    </a>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    @*<div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", null, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                </button>*@
+    @*</div>*@
 
-                    @if (Request.IsAuthenticated && User.IsInRole("Admin")) {
-                        <li>@Html.ActionLink("RolesAdmin", "Index", "RolesAdmin")</li>
-                        <li>@Html.ActionLink("UsersAdmin", "Index", "UsersAdmin")</li>
-                    }
-                </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
+
+    <div class="container">
+        @* AJAX DELETE STEP 8 - Message Container *@
+        <div id="MessageDisplay" class="row">
+            <div class="col-md-10 col-md-offset-1" id="MessageContent"></div>
         </div>
     </div>
+    @* Step 9 is on the Jewelery controller. *@
+
+
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - The Luminary Body Jewelery</p>
         </footer>
     </div>
+    <h2 class="text-center">Trusted Partners</h2>
 
+    <div class="row partners">
+        <div class="col partner-col text-center">
+
+            <img src="~/Content/images/Supplier1.png" />
+        </div>
+        <div class="col partner-col text-center">
+
+            <img src="~/Content/images/Supplier2.png" />
+        </div>
+        <div class="col partner-col text-center">
+
+            <img src="~/Content/images/Supplier3.png" />
+        </div>
+
+    </div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
+    <!-- jQuery -->
+    <script src="~/Content/js/jquery.min.js"></script>
+    <!-- popper -->
+    <script src="~/Content/js/popper.min.js"></script>
+    <!-- bootstrap 4.1 -->
+    <script src="~/Content/js/bootstrap.min.js"></script>
+    <!-- jQuery easing -->
+    <script src="~/Content/js/jquery.easing.1.3.js"></script>
+    <!-- Waypoints -->
+    <script src="~/Content/js/jquery.waypoints.min.js"></script>
+    <!-- Flexslider -->
+    <script src="~/Content/js/jquery.flexslider-min.js"></script>
+    <!-- Owl carousel -->
+    <script src="~/Content/js/owl.carousel.min.js"></script>
+    <!-- Magnific Popup -->
+    <script src="~/Content/js/jquery.magnific-popup.min.js"></script>
+    <script src="~/Content/js/magnific-popup-options.js"></script>
+    <!-- Date Picker -->
+    <script src="~/Content/js/bootstrap-datepicker.js"></script>
+    <!-- Stellar Parallax -->
+    <script src="~/Content/js/jquery.stellar.min.js"></script>
+    <!-- Main -->
+    <script src="~/Content/js/main.js"></script>
+    <script src="//cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <!--AJAX STEP 1: jQuery UI below-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="~/Content/js/jquery-gallery.js"></script>
 </body>
 </html>

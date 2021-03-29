@@ -2,10 +2,13 @@
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using StoreFront2.DATA.EF;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using StoreFront2.UI.MVC.Models;
+
 
 namespace IdentitySample.Controllers
 {
@@ -16,7 +19,7 @@ namespace IdentitySample.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -149,6 +152,7 @@ namespace IdentitySample.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -158,8 +162,32 @@ namespace IdentitySample.Controllers
                     //await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
                     //ViewBag.Link = callbackUrl;
 
-                    var trySignIn = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, false, false);
-                    return RedirectToAction("Index", "Home");
+                    //**********USER DETAILS STEP 3 -- make sure to add using statment for DATA LAYER
+                    #region dealing with custom user details
+                    UserDetail newUserDeets = new UserDetail();
+                    newUserDeets.UserID = user.Id;
+                    newUserDeets.FirstName = model.FirstName;
+                    newUserDeets.LastName = model.LastName;
+                    newUserDeets.Address = model.Address;
+                    newUserDeets.City = model.City;
+                    newUserDeets.State = model.State;
+                    newUserDeets.Zip = model.Zip;
+                    newUserDeets.Phone = model.Phone;
+                  
+                    //newUserDeets.ResumeFile = model.ResumeFile;
+
+                    StoreFrontEntities  db = new StoreFrontEntities();
+                    db.UserDetails.Add(newUserDeets);
+                    db.SaveChanges();
+
+                    #endregion
+
+                    //var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+
+                    //UserManager.AddToRole(user.Id, "Sales");
+
+                    //var trySignIn = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, false, false);
+                    return View("Login");
                 }
                 AddErrors(result);
             }

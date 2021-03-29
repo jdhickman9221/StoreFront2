@@ -1,0 +1,33 @@
+﻿@model IEnumerable<StoreFront2.DATA.EF.InvStatu>
+
+@{
+    ViewBag.Title = "Product Status";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("Add Status", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.InvName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.InvName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit Status", "Edit", new { id=item.InvID }) |
+            @Html.ActionLink("Status Info", "Details", new { id=item.InvID }) |
+            @Html.ActionLink("Delete Status", "Delete", new { id=item.InvID })
+        </td>
+    </tr>
+}
+
+</table>

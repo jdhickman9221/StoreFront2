@@ -1,0 +1,24 @@
+﻿@model StoreFrontJordan.MVC.UI.Models.ContactViewModel
+
+@{
+    ViewBag.Title = "Your Email Confirmation";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-offest-3 col-md-6">
+            <p class="text-success">
+                We have received your email, @Model.Name. Within 24 hours, we will contact you at @Model.Message in regards to the following message:
+            </p>
+        </div>
+    </div>
+</div>
+
+<p>
+    @*@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+        @Html.ActionLink("Back to List", "Index")*@
+</p>

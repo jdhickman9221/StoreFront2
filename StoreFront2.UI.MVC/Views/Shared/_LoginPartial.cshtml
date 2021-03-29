@@ -1,19 +1,48 @@
 ﻿@using Microsoft.AspNet.Identity
-@if (Request.IsAuthenticated) {
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" })) {
+@using StoreFront2.DATA.EF @*access to our domain models.*@
+
+
+@{
+    int location = User.Identity.GetUserName().IndexOf("@");
+}
+@*
+    -------Custom User Details-------
+        Anytime we need UserDetails record for the current user, we will do the following:
+        - Login from the UI of app to generate the Asp.Net tables (make sure your connstrings are updated first)
+        - Add a UserDetails table that has a 1:1 relationship with ASP.NET Users (Id -> UserID)
+        - Update edmx
+        - add using for Microsoft.AspNet.Identity
+        - to get the current user's ID - call to User.Identity.GetUserId() (this pulls the Id from Asp.Net Users table)
+        - Use LINQ to find the matching record on the UserDetail table
+*@
+
+
+@if (Request.IsAuthenticated)
+{
+    StoreFrontEntities db = new StoreFrontEntities();//this is our data context
+    string userID = User.Identity.GetUserId(); //pull info from AspNetUsers
+    UserDetail currentUser = db.UserDetails.Where(ud => ud.UserID == userID).FirstOrDefault();
+
+    string userFN = "Guest";
+
+    if (currentUser != null)
+    {
+        userFN = currentUser.FirstName + "!";
+    }
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
         @Html.AntiForgeryToken()
 
-        <ul class="nav navbar-nav navbar-right">
-            <li>
-                @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-            </li>
-            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-        </ul>
+        <li>
+            @Html.ActionLink($"Hello {userFN}", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+        </li>
+        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
     }
 }
-else {
-    <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-    </ul>
+else
+{
+    <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+    <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
 }
+
+

@@ -1,0 +1,51 @@
+﻿@model IEnumerable<StoreFront2.DATA.EF.Supplier>
+
+@{
+    ViewBag.Title = "Suppliers";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("Add Supplier", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CompanyName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.City)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.State)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Phone)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.CompanyName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.City)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.State)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Phone)
+        </td>
+        <td>
+            @Html.ActionLink("Edit Supplier", "Edit", new { id=item.SupplierID }) |
+            @Html.ActionLink("Supplier Info", "Details", new { id=item.SupplierID }) |
+            @Html.ActionLink("Remove Supplier", "Delete", new { id=item.SupplierID })
+        </td>
+    </tr>
+}
+
+</table>

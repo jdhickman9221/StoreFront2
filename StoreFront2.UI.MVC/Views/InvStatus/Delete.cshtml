@@ -1,0 +1,32 @@
+﻿@model StoreFront2.DATA.EF.InvStatu
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete @Model.InvName?</h3>
+<div>
+    <h4>InvStatu</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.InvName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InvName)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete Permanently" class="btn btn-danger pull-right" />
+            @Html.ActionLink("Cancel", "Index", null, new {@class ="pull-left btn btn-dark" })
+        </div>
+    }
+</div>

@@ -1,0 +1,216 @@
+﻿@model IEnumerable<StoreFront2.DATA.EF.Jewelery>
+
+@{
+    ViewBag.Title = "Jewelery";
+}
+@section datatablesCSS{
+
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" />
+}
+
+
+
+<p>
+    @Html.ActionLink("Add Jewelery", "Create")
+</p>
+<div class="breadcrumbs-two">
+    <div class="container" id="shop-index">
+        <div class="row" id="shop-index">
+            <div class="col" id="shop-index">
+                <div class="breadcrumbs-img" id="shop-index" style="
+        background-image: url('../../Content/images/IndexBanner.jpg');
+">
+                    <h2>SHOP</h2>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+@* AJAX DELETE STEP 3, add ID to call upon later for the Table. *@
+<table class="table" id="dataTable">
+    <thead>
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fit.FitName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Material.MaterialName)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.UnitsSold)
+            </th>*@
+            @*<th>
+                @Html.DisplayNameFor(model => model.ReleaseDate)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.ProductImage)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Type.TypeName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SoldAsPair)
+            </th>
+
+
+            <th>
+                @Html.DisplayNameFor(model => model.InvStatu.InvName)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Supplier.CompanyName)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fit.FitName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Material.MaterialName)
+                </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.UnitsSold)
+                </td>*@
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.ReleaseDate)
+                </td>*@
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.ProductImage)*@
+                    <img src="~/Content/images/products/t_@item.ProductImage" alt="Jewelery" title="@item.ProductImage" />
+                </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type.TypeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SoldAsPair)
+                </td>
+
+
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.InvStatu.InvName)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Supplier.CompanyName)
+                </td>
+
+                <td>
+                    @Html.ActionLink("Edit Jewelery", "Edit", new { id = item.ProductID }) |
+
+                    @*AJAX DETAILS STEP 10 -- changing the details, comment out original. Step 11 is below on the index view. *@
+                    @Html.ActionLink("Jewelery Info", "Details", new { id = item.ProductID }) |
+                    @*<a href="" class="DetailsLink" id="@item.ProductID">Details</a> |*@
+
+                    @* AJAX DELETE Step 4 - comment out the DELETE and replace with AJAX.ACTIONLINK *@
+                    @* We need to replace the original delete link, from the originally scaffolded table. Replace it with Ajax.ActionLink(with
+                        overloads).*@
+
+                    @*@Html.ActionLink("Remove Jewelery", "Delete", new { id = item.ProductID })*@
+                    @*Ajax ActionLink code template for the particular overload we are using:
+                    (string text, string action, string controller, object routeValues, object ajaxOptions)
+
+                    ajaxOptions includes what Method to send the request with (POST), a confirm which asks the user to verify the action before its executed
+                    and finally what functions to run if the request is successful or if it fails*@
+
+                    @Ajax.ActionLink("Remove Jewelery", "AjaxDelete", "Jeweleries", new { id = item.ProductID}, new AjaxOptions
+               {
+                   HttpMethod="POST",
+                   Confirm=$"Are you sure you want to delete {item.ProductName} from Store?",
+                   OnSuccess="deleteConfirmed",
+                   OnFailure="deleteFailed"
+               })
+                </td>
+            </tr>
+
+        }
+    </tbody>
+    @* LOOK HERE! This datatables.net jQuery needs to have a thead and tbody! Also, the tbody needs to end after the foreach. *@
+
+</table>
+@* AJAX DETAILS STEP 11 -- adding a div for this view for a pop-up to user. Step 12 is in the scripts below on this view. *@
+<div id="ProductDetails"></div>
+
+@* AJAX DELETE STEP 5 - Adding section for scripts *@
+@section scripts{
+    <script src="//cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#dataTable').DataTable();
+        });
+        </script>
+
+
+
+    <script>
+
+
+        //AJAX DELETE STEP 6 - Delete Confirmed Function -- Javascript Now.
+        function deleteConfirmed(response, status, data)
+        {
+            //remove the row from the table.
+            var rowId = "#Jewelery-" + response.id;//rowId being declared here. 
+            $('#dataTable').find(rowId).remove();//find and remove are from jQuery. $ sign means we are calling on jQuery.
+
+            //display a status message (use AJAX response's message property)
+            $('#MessageContent').html("<div class='alert alert-success'>" + response.message + "</div>");//here we are using Ajax reponse message
+            //property. and using .html like inner html. placing it inside a div.
+        }
+
+        //AJAX DELETE STEP 7 - Delete Failed Function.
+        function deleteFailed(response, status, data) {
+            //display a status message
+            $('#MessageContent').html("<div class='alert alert-danger>Delete was unsuccessful.</div>");
+            //Step 8 is on the layout.
+        }
+
+        //AJAX DETAILS STEP 12 - function to handle a click of the details button on any record. Step 13 is on the controller.
+        //$('a.DetailsLink').click(function (e) {
+        //    e.preventDefault(); //this prevents the default behavior of the browser.
+        //    //target the pop-up placeholder div, pass it data (this clicked link's id) then apply jQueryUI dialog plugin to make it a pop-up
+        //    //open PubDetails partial view and load it into that pop-up.
+
+        //    $('#ProductDetails').data('pId', $(this).attr('id')).dialog({
+        //        width: 400,
+        //        height: 200,
+        //        open: function () {
+        //            var prodID = $(this).data('pId');
+        //            $(this).load("/Jeweleries/_ProductDetails/" + prodID);
+        //        },
+        //        title: "Product Details",
+        //        modal: true,
+        //        resizable: false
+        //    });
+        //});
+
+    </script>
+
+     
+    
+}

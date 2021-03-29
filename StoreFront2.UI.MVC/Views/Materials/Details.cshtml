@@ -1,0 +1,26 @@
+﻿@model StoreFront2.DATA.EF.Material
+
+@{
+    ViewBag.Title = "Material Info";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+   
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.MaterialName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaterialName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit Material", "Edit", new { id = Model.MaterialID }) |
+    @Html.ActionLink("Back to Materials", "Index")
+</p>

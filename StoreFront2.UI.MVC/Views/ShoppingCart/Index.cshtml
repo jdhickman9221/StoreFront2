@@ -1,0 +1,100 @@
+﻿@* Step 6 - gnerating view and cusomizing *@
+@*@model IEnumerable<StoreFront2.UI.MVC.Models.CartItemViewModel>*@
+
+@* Generated this page with list scaffolding for the CartItemViewModel, but we hae to change the model because we are passing a dictionary. *@
+@model Dictionary<int, StoreFront2.UI.MVC.Models.CartItemViewModel>
+@{
+    ViewBag.Title = "Index";
+
+    //add local variables for calculations on this page. These will be running total variables.
+    decimal? cartTotal = 0;
+    int totalCountOfItems = 0;
+}
+
+<p class="text-right">
+    @Html.ActionLink("Back To Shopping", "Index", "Books", null, new { @class = "btn btn-info" })
+</p>
+
+<h2 class="text-center">@ViewBag.Title</h2>
+
+@if (Model.Count == 0)
+{
+    <p class="alert alert-warning">
+        @ViewBag.Message
+    </p>
+}
+else
+{
+    <table class="table">
+        <tr>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Qty)*@
+                Jewelery</th>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Total</th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            //when iterating through a dictionary, you have to specify if you are asking for info about the key or the value.
+            <tr>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.Qty)*@
+                    <img src="~/Content/images/products/t_@item.Value.Product.ProductImage" alt="@item.Value.Product.ProductName" title="@item.Value.Product.ProductName"/>
+                </td>
+                <td>
+                    @* edit the quantity *@
+                    @using (Html.BeginForm("UpdateCart", "ShoppingCart", FormMethod.Post))
+                    {
+                        @Html.Hidden("productId", item.Value.Product.ProductID)
+                        @*It is hidden and not hidden for because this is the model of the dictionary "shoppingCart" *@
+                        //this is so we can pass to the controller the id of the item the user is updating.
+                        @Html.TextBox("qty", item.Value.Qty, new { @class = "form-control", @style = "max-width: 50px; display: inline;" })//shows the user the current qty when the page first loads.
+                        <input type="submit" value="Update Quantity" class="btn btn-info" />
+                    }
+
+                    @{ 
+                        //calculate the running total variable for number of items in cart
+                        totalCountOfItems += item.Value.Qty;
+                    }
+                </td>
+                <td>
+                    @* These are pre built action links. *@
+                    @* next this is for the product name. *@
+                    @item.Value.Product.ProductName
+                   
+                </td >
+                <td>@string.Format($"{item.Value.Product.Price:c}")</td>
+                <td>
+                    @* we will calculate the line item total and update the running total variable for the overall cost of items in cart. *@
+
+                    @{ 
+                        decimal? lineTotal = item.Value.Product.Price * item.Value.Qty;
+                        cartTotal += lineTotal;
+                    }
+
+                    @string.Format($"{lineTotal:c}");
+                </td>
+                <td>
+                    @* remove from cart button, this we will have to use the Item ID. We will make the remove method in the controller. *@
+                    @Html.ActionLink("Remove From Cart", "RemoveFromCart", "ShoppingCart", new { id = item.Key}, null)
+
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+
+<p class="alert alert-success text-center" style="font-size: 1.25em;">
+    You have @totalCountOfItems item@(totalCountOfItems == 1 ? "" : "s") in your cart.
+    Your total before taxes and shipping is @string.Format($"{cartTotal:c}.")
+    @* We called upon the variable of cartTotal which was assigned above as zero. The reason for that is so we can re assign it. *@
+</p>
+
+@*<p>
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
+

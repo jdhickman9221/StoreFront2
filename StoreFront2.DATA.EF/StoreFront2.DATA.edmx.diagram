@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="290d8453939547c3b45284324b704ea1" Name="Diagram1" ZoomLevel="89">
+        <EntityTypeShape EntityType="StoreFrontModel.C__MigrationHistory" Width="1.5" PointX="2.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="StoreFrontModel.AspNetRole" Width="1.5" PointX="5.75" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="StoreFrontModel.AspNetUserClaim" Width="1.5" PointX="10.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="StoreFrontModel.AspNetUserLogin" Width="1.5" PointX="10.25" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="StoreFrontModel.AspNetUser" Width="1.5" PointX="8" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="StoreFrontModel.Fit" Width="1.5" PointX="0.75" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="StoreFrontModel.InvStatu" Width="1.5" PointX="0.75" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="StoreFrontModel.Material" Width="1.5" PointX="0.75" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="StoreFrontModel.Supplier" Width="1.5" PointX="0.75" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="StoreFrontModel.sysdiagram" Width="1.5" PointX="4.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="StoreFrontModel.Type" Width="1.5" PointX="0.75" PointY="13.25" IsExpanded="true" />
+        <AssociationConnector Association="StoreFrontModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="StoreFrontModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="StoreFrontModel.AspNetUserRoles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="StoreFrontModel.Jewelery" Width="1.5" PointX="3" PointY="10.375" />
+        <AssociationConnector Association="StoreFrontModel.FK_Jeweleries_Fits" />
+        <AssociationConnector Association="StoreFrontModel.FK_Jeweleries_InvStatus" />
+        <AssociationConnector Association="StoreFrontModel.FK_Jeweleries_Materials" />
+        <AssociationConnector Association="StoreFrontModel.FK_Jeweleries_Suppliers" />
+        <AssociationConnector Association="StoreFrontModel.FK_Jeweleries_Types" />
+        <EntityTypeShape EntityType="StoreFrontModel.UserDetail" Width="1.5" PointX="10.25" PointY="7" />
+        <AssociationConnector Association="StoreFrontModel.FK_UserDetails_AspNetUsers" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
